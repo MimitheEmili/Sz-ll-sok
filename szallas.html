@@ -95,7 +95,7 @@ body{
   <div class="container">
     <a class="navbar-brand" href="#"><i class="fab fa-linkedin fa-2x"></i></a>
     <img src="tokiohotel1.png" alt="nahh">
-    <a class="nav-link active d-flex flex-column text-center onlyfo" aria-current="page" href="#"><i class="fas fa-home fa-lg"></i><span 
+    <a class="nav-link active d-flex flex-column text-center onlyfo" aria-current="page" href="Szallasok.html"><i class="fas fa-home fa-lg"></i><span 
       class="small">Főoldal</span></a>
 
     <form class="input-group" style="width: 400px">
@@ -117,22 +117,148 @@ body{
           
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="#"><i class="fas fa-user-friends fa-lg"></i><span class="small"> Szállások</span></a>
+          <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="szallas.html"><i class="fas fa-user-friends fa-lg"></i><span class="small"> Szállások</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="#"><i class="fas fa-bell fa-lg"></i><span class="small">Új szállás</span></a>
+          <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="ujszallas.html"><i class="fas fa-bell fa-lg"></i><span class="small">Új szállás</span></a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 </header>  
-
-<!-- <div class="Szoveg">
-  <h1><u>Kiemelt ajánlataink:</u></h1>  
-</div> -->
-
+<div id="cardContainer">
+        
+</div>
 <script>
+// GET - adatlekérés
+
+// csak 1 paraméter: url
+
+fetch("https://www.nodejs.sulla.hu/data")
+.then(function(datas) {
+    return datas.json(); // json() -> JSON-ből JS objektummá alakít
+})
+.then(function(datas) {
+    console.log(datas);
+    let contentHTML = "";
+    for (let i = 0; i < datas.length; i++) {
+        contentHTML += `<div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">${datas[i].name}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">${datas[i].location}</h6>
+          <p class="card-text">Minimum éjszakák: ${datas[i].minimum_nights}</p>
+          <button class="button" onClick=Delete(${datas[i].id})>Töröl</button>
+        </div>
+      </div>`
+    }
+    document.getElementById("content").innerHTML = contentHTML;
+}).catch(error => {
+    console.error('Hiba történt a kérés során:', error);
+    alert('Hiba történt az adatok lekérése közben.');
+});
+
+// GET ID - konkrét adat lekérés
+
+// url után egy egyedi azonosító
+fetch("https://www.nodejs.sulla.hu/data/1")
+.then(function(datas) {
+    return datas.json();
+})
+.then(function(data) {
+        document.getElementById("contentFirst").innerHTML = `<div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">${data.name}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">${data.location}</h6>
+          <p class="card-text">Minimum éjszakák: ${data.minimum_nights}</p>
+        </div>
+      </div>`
+}).catch(error => {
+    console.error('Hiba történt a kérés során:', error);
+    alert('Hiba történt az adatok lekérése közben.');
+});
+
+// POST - adatfeltöltés
+
+// jellemzően egy eseményhez kötve, pl onclick
+document.getElementById("button").onclick = function() {
+
+    // adatok input mezőkből kiolvasás JS objektumba
+    let bodyForPost = JSON.stringify({ // JSON.stringify -> JSON-be alakítás
+        hostname: document.getElementById("host_name").value,
+        location: document.getElementById("location").value,
+        minimum_nights: document.getElementById("minimum_nights").value,
+        name: document.getElementById("name").value,
+        price: Number(document.getElementById("price").value)
+    })
+
+// kell egy 2. paraméter: objektum -> kulcsokkal
+fetch("https://www.nodejs.sulla.hu/data", {
+    method: "POST",
+    body: bodyForPost,
+    headers: {
+        "Content-Type": "application/json"
+    }
+})
+.then(function() {
+    location.reload()
+}).catch(error => {
+    console.error('Hiba történt a kérés során:', error);
+    alert('Hiba történt az adatok lekérése közben.');
+});
+}
+
+// PUT - adatmódosítás
+
+document.getElementById("button2").onclick = function() {
+
+    let id = document.getElementById("idForPut").value
+  
+    let bodyForPut = JSON.stringify({
+        hostname: document.getElementById("host_name2").value,
+        location: document.getElementById("location2").value,
+        minimum_nights: document.getElementById("minimum_nights2").value,
+        name: document.getElementById("name2").value,
+        price: Number(document.getElementById("price2").value)
+    })
+  
+    // PUT-hoz kell az id az url végére
+    fetch("https://www.nodejs.sulla.hu/data/"+id, {
+      method: "PUT",
+      body: bodyForPut,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function() {
+        location.reload()
+    }).catch(error => {
+        console.error('Hiba történt a kérés során:', error);
+        alert('Hiba történt az adatok lekérése közben.');
+    });
+  }
+  
+  // DELETE - adat törlés
+  
+  // Teszünk egy Törlés gombot a GET-nél kirajzolt cardokra, majd meghívjuk a Torles() függvényt
+  function Delete(id) {
+    if(confirm("Biztosan törlöd?")) {
+      fetch("https://www.nodejs.sulla.hu/data/"+id, {
+          method: "DELETE",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function() {
+          location.reload()
+        }).catch(error => {
+            console.error('Hiba történt a kérés során:', error);
+            alert('Hiba történt az adatok lekérése közben.');
+        });
+      }
+  }
+
+// GET ID - konkrét adat lekérés
+
+// url után egy egyedi azonosító
 
 </script>
 </body>

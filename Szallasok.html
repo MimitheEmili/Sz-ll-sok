@@ -3,145 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizza oldal</title>
+    <title>Szállások</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-        .labels, input {
-            margin-top: 20px;
-        }
+        .navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #262626;
+}
+
+.navbar-scroll {
+  background-color: #FFC017;
+}
+
+.navbar-scrolled .nav-link,
+.navbar-scrolled .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #262626;
+}
+.forma{
+    font-size: 30px;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s ease;
+}
+
+.forma:hover {
+    background: linear-gradient(to bottom, #ffcccc, #cc99ff);
+  }
+
+.navbar-scrolled {
+  background-color: #fff;
+}
+
+.onlyfo{
+  font-size: 30px;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s ease;
+    margin-right: 60px;
+}
+
+img{
+  width: 115px;
+  height: 70px;
+  margin-left: -300px;
+  
+}
+
+
+.onlyfo:hover {
+    background: linear-gradient(to bottom, #a2cffe, #cc99ff);
+  }
+
+.navbar.navbar-scroll.navbar-scrolled {
+  padding-top: auto;
+  padding-bottom: auto;
+}
+.navbar-brand {
+  font-size: unset;
+  height: 3.5rem;
+  display:block ;
+}
+.Szoveg{
+  margin-top: 140px;
+  margin-left: 60px;
+  
+}
+
+body{
+  margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
     </style>
     
 </head>
 <body>
-    <div>
-
-        <label class="labels">Adja meg a pizza nevét:</label>
-        <input id="name" type="text">
-        <br>
-        <label class="labels">Adja meg, hogy vegán-e a pizza(1 igen, 0 nem):</label>
-        <input id="isGlutenFree" type="number">
-        <br>
-        <label class="labels">Írja be a kép Url linkjét:</label>
-        <input id="kepURL" type="url">
-        <button id="button1" class="btn btn-primary">Mentés</button>
-    </div>
-    <div id="cardContainer">
-        
-    </div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top formazas">
+        <div class="container">
+          <a class="navbar-brand" href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+          <img src="tokiohotel1.png" alt="nahh">
+          <a class="nav-link active d-flex flex-column text-center onlyfo" aria-current="page" href="Szallasok.html"><i class="fas fa-home fa-lg"></i><span 
+            class="small">Főoldal</span></a>
+      
+          <form class="input-group" style="width: 400px">
+            <input type="search" class="form-control" placeholder="Keresés..." aria-label="Search" />
+            <button class="btn btn-outline-primary" type="button" data-mdb-ripple-color="dark" style="padding: .45rem 1.5rem .35rem;">
+              Keresés
+            </button>
+          </form>
+          
+          <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="szallas.html"><i class="fas fa-user-friends fa-lg"></i><span class="small"> Szállások</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex flex-column text-center forma" aria-current="page" href="ujszallas.html"><i class="fas fa-bell fa-lg"></i><span class="small">Új szállás</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      </header>
 
     <script>
-        // GET
-
-        let pizzak = [];
-        fetch("https://pizza.kando-dev.eu/Pizza")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                const cardContainer = document.getElementById("cardContainer");
-                pizzak = [...data]
-                data.forEach(pizza => {
-                    console.log(pizzak.indexOf(pizza));
-                    cardContainer.innerHTML += `
-                        <div class="card" style="width: 18rem;">
-                            <img src="${pizza.kepURL ? pizza.kepURL : "placeholder.jpg"}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${pizza.name} ${pizza.kepURL}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">${pizza.isGlutenFree ? "Vegán" : "Nem vegán"}</h6>
-                                <button type="button" onclick="Torles(${pizza.id})" class="btn btn-danger">Törlés</button>
-                                <button type="button" onclick="Modositas(${pizzak.indexOf(pizza)}), '${pizza.name}', ${pizza.isGlutenFree}, '${pizza.kepURL}')" class="btn btn-warning">Szerkesztés</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            })
-            .catch(error => console.error("Hiba történt a lekérés során:", error));
-
-        // POST
-
-        document.getElementById("button1").onclick = function() {
-
-            const name = document.getElementById("name").value;
-            const isGlutenFreeValue = document.getElementById("isGlutenFree").value;
-            const kepURL = document.getElementById("kepURL").value;
-
-
-            fetch("https://pizza.kando-dev.eu/Pizza", {
-                method: "POST",
-                body: JSON.stringify({
-                    name: name,
-                    isGlutenFree: Number(isGlutenFreeValue),
-                    kepURL: kepURL
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(data => {
-                console.log("Sikeres mentés:", data);
-                setTimeout(() => {
-                    location.reload();
-                }, 5000);
-            })
-            .catch(error => {
-                console.error('Hiba történt a kérés során:', error);
-                alert('Hiba történt az adatok lekérése közben.');
-            });
-
-        }
-
-// for (let i = 53; i <= 1059; i++) {
-//     fetch(`https://nodejs.sulla.hu/data/${i}`, {
-//                     method: "DELETE"
-//                 })
-    
-// }
-
-    
-
-
-        // DELETE
-        function Torles(id) {
-            if (confirm("Biztosan törölni szeretnéd ezt a pizzát?")) {
-                fetch(`https://pizza.kando-dev.eu/Pizza/${id}`, {
-                    method: "DELETE"
-                })
-                .then(data => {
-                    console.log("Sikeres törlés:", data);
-                    location.reload();
-                })
-                .catch(error => console.error("Hiba történt a törlés során:", error));
-            }
-        }
-
-        // PUT
-        function Modositas(index, name, isGlutenFree, kepURL) {
-            const newName = prompt("Adja meg a pizza új nevét:", name);
-            if (newName !== null) {
-                const newisGlutenFree = parseInt(prompt("Adja meg, hogy a pizza vegán-e vagy sem (1 igen, 0 nem):", isGlutenFree));
-                const newkepURL = prompt("Adja meg a pizza új kép URL-jét:", kepURL);
-
-                fetch(`https://pizza.kando-dev.eu/Pizza/${pizzak[index].id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        id: pizzak[index].id,
-                        name: newName,
-                        isGlutenFree: newisGlutenFree,
-                        kepURL: newkepURL
-                    })
-                })
-                .then(data => {
-                    console.log("Sikeres szerkesztés:", data);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000); 
-                    console.log(data)
-                })
-                .catch(error => console.error("Hiba történt a szerkesztés során:", error));
-            }
-        }
+        
     </script>
    
 </body>
